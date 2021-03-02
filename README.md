@@ -1,5 +1,7 @@
 Mac
 
+copy .env.example to .env file 
+
 install [ddev](https://www.ddev.com/get-started/) and docker desktop
 
 cd into application root dir then run `ddev start`
