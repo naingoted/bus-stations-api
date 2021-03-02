@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\StationController;
+use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\BusController;
 use App\Http\Controllers\API\BusRouteController;
 use App\Http\Controllers\API\BusRouteStationController;
@@ -27,7 +27,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         Route::post('login', [AuthController::class, 'login']);
         Route::middleware('auth:api')->group(function () {
             Route::post('logout', [AuthController::class, 'logout']);
-            Route::apiResource('projects', ProjectController::class);
+            Route::apiResource('users', UserController::class);
             Route::apiResource('stations', StationController::class);
             Route::apiResource('buses', BusController::class);
             Route::apiResource('busRoutes', BusRouteController::class);

@@ -15,11 +15,13 @@ class CreateBusRouteStationsTable extends Migration
     {
         Schema::create('bus_route_stations', function (Blueprint $table) {
             $table->id();
-            $table->string('busRouteId',255);
-            $table->string('stationId',255);
+            $table->foreignId('busRouteId');
+            $table->foreignId('stationId');
             $table->integer('status')->default(1);
             $table->timestamps();
             $table->unique(['busRouteId', 'stationId']);
+            $table->foreign('busRouteId')->references('id')->on('bus_routes');
+            $table->foreign('stationId')->references('id')->on('stations');
         });
     }
 
