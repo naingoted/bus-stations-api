@@ -15,8 +15,8 @@ class CreateStationsTable extends Migration
     {
         Schema::create('stations', function (Blueprint $table) {
             $table->id();
-            $table->string('stationCode',255);
-            $table->string('name',255);
+            $table->string('stationCode',255)->unique();
+            $table->string('name',255)->unique();
             $table->string('lat',255);
             $table->string('lon',255);
             $table->integer('status')->default(1);

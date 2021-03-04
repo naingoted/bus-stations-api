@@ -22,7 +22,8 @@ class BusRouteFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'routeId' => $this->faker->biasedNumberBetween($min = 1, $max = 10, $function = 'sqrt'),
+            'busId' => $this->faker->biasedNumberBetween($min = 1, $max = 10, $function = 'sqrt'),
         ];
     }
 }

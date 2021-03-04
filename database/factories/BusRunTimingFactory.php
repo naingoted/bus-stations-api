@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Model;
+use App\Models\BusRunTiming;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BusRunTimingFactory extends Factory
@@ -12,7 +12,7 @@ class BusRunTimingFactory extends Factory
      *
      * @var string
      */
-    protected $model = Model::class;
+    protected $model = BusRunTiming::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,9 @@ class BusRunTimingFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'busRouteStationId' => $this->faker->biasedNumberBetween($min = 1, $max = 10, $function = 'sqrt'),
+            'eta' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '+15 minutes', $timezone = null),
+            'etd' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '+5 minutes', $timezone = null)
         ];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BusRouteStation extends Model
+class Route extends Model
 {
     use HasFactory;
 
@@ -15,10 +15,6 @@ class BusRouteStation extends Model
      * @var array
      */
     protected $fillable = [
-        'stationCode',
         'name',
-        'lat',
-        'lon',
-        'status'
     ];
 }

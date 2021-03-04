@@ -22,7 +22,10 @@ class StationFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'stationCode' => $this->faker->unique()->postcode,
+            'name' => $this->faker->unique()->streetName,
+            'lat' => $this->faker->unique()->latitude($min = 1.29, $max = 1.44),
+            'lon' => $this->faker->unique()->longitude($min = 103.82, $max = 103.85)        
         ];
     }
 }

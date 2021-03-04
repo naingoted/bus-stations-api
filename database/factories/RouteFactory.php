@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Model;
+use App\Models\Route;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RouteFactory extends Factory
@@ -12,7 +12,7 @@ class RouteFactory extends Factory
      *
      * @var string
      */
-    protected $model = Model::class;
+    protected $model = Route::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,7 @@ class RouteFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->unique()->streetName
         ];
     }
 }
