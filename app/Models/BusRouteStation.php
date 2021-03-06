@@ -15,10 +15,8 @@ class BusRouteStation extends Model
      * @var array
      */
     protected $fillable = [
-        'stationCode',
-        'name',
-        'lat',
-        'lon',
+        'busRouteId',
+        'stationId',
         'status'
     ];
 }

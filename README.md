@@ -43,4 +43,33 @@ type `ddev ssh` to get into applcation container and run following laravel comma
         
     each bus have estimate time of arrival and next bus arrival time.
 
+    // 
+    [
+        {
+            name: 'bus stop 1',
+            address: '',
+
+        },
+        {
+
+        }
+    ]
+
+
+    busStop - clicked
+    loading....
+    show the bus List
+        busNumber 
+        
+        busNumber
+        
+    busStop
+    busStop
+
+
+    new bus
+        auto complete dropdown select to set station.
+        /api/v1/stationSearch
+        /api/v1/createBus @param busCode, stationId, routeId.
+
     

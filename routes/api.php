@@ -7,6 +7,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\BusController;
 use App\Http\Controllers\API\BusRouteController;
 use App\Http\Controllers\API\BusRouteStationController;
+use App\Http\Controllers\API\LocateBusStopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,8 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         Route::post('register', [AuthController::class, 'register']);
         Route::post('login', [AuthController::class, 'login']);
         Route::middleware('auth:api')->group(function () {
+            Route::post('busStopNearMe', [LocateBusStopController::class, 'getBusStopNearBy']);
+            Route::post('busList', [LocateBusStopController::class, 'getBusListByBusStop']);
             Route::post('logout', [AuthController::class, 'logout']);
             Route::apiResource('users', UserController::class);
             Route::apiResource('stations', StationController::class);

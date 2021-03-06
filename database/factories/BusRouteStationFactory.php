@@ -24,7 +24,7 @@ class BusRouteStationFactory extends Factory
     {
         return [
             'busRouteId' => $this->faker->biasedNumberBetween($min = 1, $max = 10, $function = 'sqrt'),
-            'busStationId' => $this->faker->biasedNumberBetween($min = 1, $max = 10, $function = 'sqrt')
+            'stationId' => $this->faker->biasedNumberBetween($min = 1, $max = 10, $function = 'sqrt')
         ];
     }
 }
