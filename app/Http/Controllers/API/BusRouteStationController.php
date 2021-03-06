@@ -45,6 +45,6 @@ class BusRouteStationController extends Controller
 
         $response = BusRouteStation::create($data);
 
-        return response(['buses' => new BusRouteStationResource($response), 'message' => 'Created successfully'], 201);
+        return response(['busRouteStations' => new BusRouteStationResource($response), 'message' => 'Created successfully'], 201);
     }
 }

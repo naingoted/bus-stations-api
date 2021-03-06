@@ -30,10 +30,10 @@ class BusRouteController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
+        
         $validator = Validator::make($data, [
-            'name' => 'required|max:255|unique:bus_routes',
-            'busId' => 'required|numeric|unique:bus_routes',
+            'routeId' => 'required|numeric',
+            'busId' => 'required|numeric',
             'status' => 'numeric'
         ]);
 
@@ -43,6 +43,6 @@ class BusRouteController extends Controller
 
         $response = BusRoute::create($data);
 
-        return response(['buses' => new BusRouteResource($response), 'message' => 'Created successfully'], 201);
+        return response(['busRoutes' => new BusRouteResource($response), 'message' => 'Created successfully'], 201);
     }
 }

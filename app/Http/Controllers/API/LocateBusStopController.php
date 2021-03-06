@@ -40,6 +40,7 @@ class LocateBusStopController extends Controller
     /**
      * @param stationId
      * 16, 9 , 19 nearest stations
+     * @todo join with bus_run_timing to get eta and etd
      */
     public function getBusListByBusStop(Request $request)
     {
@@ -56,6 +57,7 @@ class LocateBusStopController extends Controller
             ->leftJoin('bus_routes', 'buses.id', '=', 'bus_routes.busId')
             ->leftJoin('bus_route_stations', 'bus_routes.id', "=", 'bus_route_stations.busRouteId')
             ->where('bus_route_stations.stationId', "=", $stationId)
+            ->where('buses.status', "=", 1)->distinct()
             ->get();
         return response(['buses' => $buses], 200);
     }

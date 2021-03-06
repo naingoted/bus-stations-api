@@ -1,4 +1,4 @@
-Mac
+## Quick start ddev
 
 copy .env.example to .env file
 
@@ -14,65 +14,28 @@ type `ddev ssh` to get into applcation container and run following laravel comma
 
 use db.sql to import data.
 
-use `{ "email" : "bradly.vandervort@example.com", "password" : "password" } ` to login via `https://bus-api.ddev.site/api/v1/login`
+You may have to update .env file if you wanna use laravel sail.
 
-all the routes are in /routes/api.php
+## Api Docs
 
-## Api Logic
+### login
 
-        find nearest station
-        getBusStationNearBy(lat,lon)
-                DB::table("station")
-                ->select("station.id"
-                    ,DB::raw("6371 * acos(cos(radians(" . $lat . "))
-                    * cos(radians(posts.lat))
-                    * cos(radians(posts.lon) - radians(" . $lon . "))
-                    + sin(radians(" .$lat. "))
-                    * sin(radians(posts.lat))) AS distance"))
-                    ->groupBy("station.id")
-                    ->get();
-                forEach Station
-                    getBusRouteByStationId(id)
-                        get busroutestationid from bus_route_stations where station id = id
-                        getBusListByRouteId
-                        forEach Bus
-                            get arrival time from Get bus_run_actual where busroutestationid= busroutestationid and busId = Bus.id and arrivalTime > now and min(arriavlTime)
+payload `{ "email" : "bradly.vandervort@example.com", "password" : "password" } ` 
+post  `https://bus-api.ddev.site/api/v1/login`
 
-                        select busRouteId from bus_route_station where stationId
-                        getBusCode
+### get bus list by bus stop
 
+payload `{ "stationId" : "9" }`
+bearer token `access_token` from login
+post  `https://bus-api.ddev.site/api/v1/busList`
 
+### create bus
+payload `{ "busCode" : "string", "status", "1", "routeId" : "numeric", "stationId" : "numeric"}`
+bearer token `access_token` from login
+post `https://bus-api.ddev.site/api/v1/buses`
 
+the rest of the routes are in /routes/api.php
 
-    once the station is expanded load bus routes
-
-    each bus have estimate time of arrival and next bus arrival time.
-
-    //
-    [
-        {
-            name: 'bus stop 1',
-            address: '',
-
-        },
-        {
-
-        }
-    ]
-
-
-    busStop - clicked
-    loading....
-    show the bus List
-        busNumber
-
-        busNumber
-
-    busStop
-    busStop
-
-
-    new bus
-        auto complete dropdown select to set station.
-        /api/v1/stationSearch
-        /api/v1/createBus @param busCode, stationId, routeId.
+### @todo 
+validate unique keys pair ['busRouteId', 'stationId'] from BusRouteStation API before inserting into db
+db transactions commit and rollback for creating new buses with route and station ids on BusController

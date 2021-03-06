@@ -26,11 +26,12 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::prefix('v1')->group(function () {
         Route::post('register', [AuthController::class, 'register']);
         Route::post('login', [AuthController::class, 'login']);
+        Route::apiResource('users', UserController::class);
         Route::middleware('auth:api')->group(function () {
             Route::post('busStopNearMe', [LocateBusStopController::class, 'getBusStopNearBy']);
             Route::post('busList', [LocateBusStopController::class, 'getBusListByBusStop']);
             Route::post('logout', [AuthController::class, 'logout']);
-            Route::apiResource('users', UserController::class);
+            // Route::apiResource('users', UserController::class);
             Route::apiResource('stations', StationController::class);
             Route::apiResource('buses', BusController::class);
             Route::apiResource('busRoutes', BusRouteController::class);

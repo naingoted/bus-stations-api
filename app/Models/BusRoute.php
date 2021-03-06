@@ -14,7 +14,7 @@ class BusRoute extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
+        'routeId',
         'busId',
         'status',
     ];

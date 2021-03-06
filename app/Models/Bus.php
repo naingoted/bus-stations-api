@@ -23,6 +23,6 @@ class Bus extends Model
      * @var array
      */
     protected $casts = [
-        'stats' => 'int',
+        'status' => 'int',
     ];
 }

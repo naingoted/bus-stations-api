@@ -12,7 +12,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::query()->orderByDesc('id')->paginate(10);
-        return response([ 'projects' => UserResource::collection($users), 'message' => 'Retrieved successfully'], 200);
+        return response([ 'users' => UserResource::collection($users), 'message' => 'Retrieved successfully'], 200);
 
     }
     /**
@@ -35,8 +35,8 @@ class UserController extends Controller
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
-        $project = Project::create($data);
+        $user = User::create($data);
 
-        return response(['project' => new ProjectResource($project), 'message' => 'Created successfully'], 201);
+        return response(['project' => new UserResource($user), 'message' => 'Created successfully'], 201);
     }
 }
