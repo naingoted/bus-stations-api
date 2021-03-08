@@ -12,7 +12,7 @@ type `ddev ssh` to get into applcation container and run following laravel comma
 
 `php artisan migrate && php artisan passport:install`
 
-use db.sql to import data.
+use db.gz to import data.
 
 You may have to update .env file if you wanna use laravel sail.
 
