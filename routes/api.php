@@ -30,7 +30,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         Route::apiResource('users', UserController::class);
         Route::middleware('auth:api')->group(function () {
             Route::post('busStopNearMe', [LocateBusStopController::class, 'getBusStopNearBy']);
-            Route::post('busList', [LocateBusStopController::class, 'getBusListByBusStop']);
+            Route::post('busListByStationId', [LocateBusStopController::class, 'getBusListByBusStop']);
             Route::post('logout', [AuthController::class, 'logout']);
             Route::apiResource('routes', RouteController::class);
             Route::post('searchRoutes', [RouteController::class, 'search']);
