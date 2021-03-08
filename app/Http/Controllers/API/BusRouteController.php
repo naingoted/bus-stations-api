@@ -17,8 +17,8 @@ class BusRouteController extends Controller
      */
     public function index()
     {
-        $response = BusRoute::all();
-        return response(['buses' => BusRouteResource::collection($response), 'message' => 'Retrieved successfully'], 200);
+        $response = BusRoute::paginate(15);
+        return response(['data' => BusRouteResource::collection($response), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
@@ -43,6 +43,6 @@ class BusRouteController extends Controller
 
         $response = BusRoute::create($data);
 
-        return response(['busRoutes' => new BusRouteResource($response), 'message' => 'Created successfully'], 201);
+        return response(['data' => new BusRouteResource($response), 'message' => 'Created successfully'], 201);
     }
 }

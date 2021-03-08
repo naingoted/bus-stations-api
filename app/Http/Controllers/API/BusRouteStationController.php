@@ -17,10 +17,12 @@ class BusRouteStationController extends Controller
      */
     public function index()
     {
-        $response = BusRouteStation::all();
-        return response(['buses' => BusRouteStationResource::collection($response), 'message' => 'Retrieved successfully'], 200);
+        $response = BusRouteStation::paginate(15);
+        return response(['data' => BusRouteStationResource::collection($response), 'message' => 'Retrieved successfully'], 200);
     }
-
+    public function search()
+    {
+    }
     /**
      * Store a newly created resource in storage.
      * @todo 
@@ -45,6 +47,6 @@ class BusRouteStationController extends Controller
 
         $response = BusRouteStation::create($data);
 
-        return response(['busRouteStations' => new BusRouteStationResource($response), 'message' => 'Created successfully'], 201);
+        return response(['data' => new BusRouteStationResource($response), 'message' => 'Created successfully'], 201);
     }
 }

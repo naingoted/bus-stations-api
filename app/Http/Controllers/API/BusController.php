@@ -22,8 +22,8 @@ class BusController extends Controller
      */
     public function index()
     {
-        $response = Bus::all();
-        return response(['buses' => BusResource::collection($response), 'message' => 'Retrieved successfully'], 200);
+        $response = Bus::paginate();
+        return response(['data' => BusResource::collection($response), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
@@ -47,14 +47,9 @@ class BusController extends Controller
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
-        // DB::transaction(function ($data) {
-        // $bus = Bus::create(["busCode" => $data["busCode"], "status" => $data["status"]]);
-        // // create bus_route by busId and routeId
-        // $busRoute = BusRoute::create(["routeId" => $data["routeId"], "busId" => $bus->id]);
-        // // create bus_route_statino by busRouteId and stationId
-        // $busRouteStation = BusRouteStation::create(["stationId" => $data["stationId"], "busRouteId" => $busRoute->id]);
-        // return response(['buses' => new BusResource($bus), 'message' => 'Created successfully'], 201);
-        // });
+        /**
+         * @todo can use DB::transaction to commit and roll back db operations
+         */
         $bus = Bus::create(["busCode" => $data["busCode"], "status" => $data["status"]]);
         // create bus_route by busId and routeId
         $busRoute = BusRoute::create(["routeId" => $data["routeId"], "busId" => $bus->id]);

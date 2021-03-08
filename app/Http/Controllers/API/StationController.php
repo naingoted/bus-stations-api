@@ -17,8 +17,8 @@ class StationController extends Controller
      */
     public function index()
     {
-        $projects = Station::all();
-        return response(['stations' => StationResource::collection($projects), 'message' => 'Retrieved successfully'], 200);
+        $projects = Station::paginate();
+        return response(['data' => StationResource::collection($projects), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
@@ -45,6 +45,17 @@ class StationController extends Controller
 
         $project = Station::create($data);
 
-        return response(['station' => new StationResource($project), 'message' => 'Created successfully'], 201);
+        return response(['data' => new StationResource($project), 'message' => 'Created successfully'], 201);
+    }
+    public function search(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            return response(['errors' => $validator->errors()->all()], 422);
+        }
+        $response = Station::where('name','like', "%{$request['name']}%")->paginate();
+        return response(['data' => StationResource::collection($response), 'message' => 'Retrieved successfully'], 200);
     }
 }
