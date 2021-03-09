@@ -39,3 +39,5 @@ bearer token `access_token` from login
 post `https://bus-api.ddev.site/api/v1/buses`
 
 the rest of the routes are in /routes/api.php
+
+## please checkout repository-pattern branch for improvements, but please use mater branch for testing with frontend
