@@ -16,6 +16,10 @@ use db.gz to import data.
 
 You may have to update .env file if you wanna use laravel sail.
 
+## @todo 
+implement repository pattern.
+db transactions commit and rollback for creating new buses with route and station ids on BusController
+
 ## Api Docs
 
 ### login
@@ -35,7 +39,3 @@ bearer token `access_token` from login
 post `https://bus-api.ddev.site/api/v1/buses`
 
 the rest of the routes are in /routes/api.php
-
-### @todo 
-validate unique keys pair ['busRouteId', 'stationId'] from BusRouteStation API before inserting into db
-db transactions commit and rollback for creating new buses with route and station ids on BusController
