@@ -25,4 +25,8 @@ class Bus extends Model
     protected $casts = [
         'status' => 'int',
     ];
+
+    public function busRoute() {
+        return $this->hasMany('\App\Models\BusRoute','busId','id');
+    }
 }

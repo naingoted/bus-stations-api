@@ -18,4 +18,8 @@ class BusRoute extends Model
         'busId',
         'status',
     ];
+
+    public function busRouteStation() {
+        return $this->hasMany('\App\Models\BusRouteStation','busRouteId','id');
+    }
 }

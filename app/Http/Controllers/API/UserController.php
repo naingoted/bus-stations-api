@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\UserResource;
+use App\Repositories\Interfaces\UserRepositoryInterface; 
 
 class UserController extends Controller
 {
+    private $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $users = User::query()->orderByDesc('id')->paginate(10);
-        return response([ 'users' => UserResource::collection($users), 'message' => 'Retrieved successfully'], 200);
-
+        return $this->userRepository->orderBy('id','DESC')->paginate();
     }
     /**
      * Store a newly created resource in storage.
@@ -34,9 +42,6 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
-
-        $user = User::create($data);
-
-        return response(['project' => new UserResource($user), 'message' => 'Created successfully'], 201);
+        return $this->userRepository->create($data);
     }
 }

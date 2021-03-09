@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\BusRoute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\BusRouteResource;
+use App\Repositories\Interfaces\BusRouteRepositoryInterface;
 
 class BusRouteController extends Controller
 {
+    private $busRouteRepository;
+
+    public function __construct(BusRouteRepositoryInterface $busRouteRepository )
+    {
+        $this->busRouteRepository = $busRouteRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +22,7 @@ class BusRouteController extends Controller
      */
     public function index()
     {
-        $response = BusRoute::paginate(15);
-        return response(['data' => BusRouteResource::collection($response), 'message' => 'Retrieved successfully'], 200);
+        return $this->busRouteRepository->all();
     }
 
     /**
@@ -41,8 +45,6 @@ class BusRouteController extends Controller
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
-        $response = BusRoute::create($data);
-
-        return response(['data' => new BusRouteResource($response), 'message' => 'Created successfully'], 201);
+        return $this->busRouteRepository->create($data);
     }
 }

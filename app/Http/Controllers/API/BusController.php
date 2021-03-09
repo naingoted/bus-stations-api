@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\API;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Bus;
-use App\Models\BusRoute;
-use App\Models\BusRouteStation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\BusResource;
-use App\Http\Resources\BusRouteResource;
-use App\Http\Resources\BusRouteStationResource;
+use App\Repositories\Interfaces\BusRepositoryInterface;
 
 class BusController extends Controller
 {
+    private $busRepository;
+
+    public function __construct(BusRepositoryInterface $busRepository)
+    {
+        $this->busRepository = $busRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -22,8 +22,7 @@ class BusController extends Controller
      */
     public function index()
     {
-        $response = Bus::paginate();
-        return response(['data' => BusResource::collection($response), 'message' => 'Retrieved successfully'], 200);
+        return $this->busRepository->paginate();
     }
 
     /**
@@ -47,20 +46,6 @@ class BusController extends Controller
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
-        /**
-         * @todo can use DB::transaction to commit and roll back db operations
-         */
-        $bus = Bus::create(["busCode" => $data["busCode"], "status" => $data["status"]]);
-        // create bus_route by busId and routeId
-        $busRoute = BusRoute::create(["routeId" => $data["routeId"], "busId" => $bus->id]);
-        // create bus_route_statino by busRouteId and stationId
-        $busRouteStation = BusRouteStation::create(["stationId" => $data["stationId"], "busRouteId" => $busRoute->id]);
-
-        return response([
-            'buses' => new BusResource($bus),
-            'busRoute' => new BusRouteResource($busRoute),
-            'busRouteStation' => new BusRouteStationResource($busRouteStation),
-            'message' => 'Created successfully'
-        ], 201);
+        return $this->busRepository->createBusWithRouteAndStation($data);
     }
 }

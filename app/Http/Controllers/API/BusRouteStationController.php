@@ -6,10 +6,16 @@ use App\Models\BusRouteStation;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\BusRouteStationResource;
+use App\Repositories\Interfaces\BusRouteStationRepositoryInterface;
 
 class BusRouteStationController extends Controller
 {
+    private $busRouteStationRepository;
+
+    public function __construct(BusRouteStationRepositoryInterface $busRouteStationRepository)
+    {
+        $this->busRouteStationRepository = $busRouteStationRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,9 +23,9 @@ class BusRouteStationController extends Controller
      */
     public function index()
     {
-        $response = BusRouteStation::paginate(15);
-        return response(['data' => BusRouteStationResource::collection($response), 'message' => 'Retrieved successfully'], 200);
+        return $this->busRouteStationRepository->paginate();
     }
+
     public function search()
     {
     }
@@ -45,8 +51,6 @@ class BusRouteStationController extends Controller
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
-        $response = BusRouteStation::create($data);
-
-        return response(['data' => new BusRouteStationResource($response), 'message' => 'Created successfully'], 201);
+        return $this->busRouteStationRepository->create($data);
     }
 }

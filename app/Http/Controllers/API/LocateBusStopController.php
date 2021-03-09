@@ -5,10 +5,19 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
+use App\Repositories\Interfaces\StationRepositoryInterface;
+use App\Repositories\Interfaces\BusRepositoryInterface;
 
 class LocateBusStopController extends Controller
 {
+    private $stationRepository;
+
+    public function __construct(StationRepositoryInterface $stationRepository, BusRepositoryInterface $busRepository)
+    {
+        $this->stationRepository = $stationRepository;
+        $this->busRepository = $busRepository;
+    }
+
     /**
      * @param lat, lon
      * lat=1.314&lon=103.6839
@@ -26,16 +35,8 @@ class LocateBusStopController extends Controller
         if ($validator->fails()) {
             return response(['errors' => $validator->errors()->all()], 422);
         }
-        $lat = $request['lat'];
-        $lon = $request['lon'];
-        // $lat = 1.4228059;
-        // $lon = 103.8366647;
-        $busStops = DB::table("stations")->select(DB::raw("
-                    id,name,stationCode, ( 6371 * acos( cos( radians(" . $lat . ") ) 
-                    * cos( radians( lat ) ) * cos( radians( lon ) - radians(" . $lon . ") ) + sin( radians(" . $lat . ") ) 
-                    * sin( radians( lat ) ) ) ) AS distance"))->havingRaw('distance < 50')->orderBy('distance')
-            ->paginate(5);
-        return response($busStops, 200);
+
+        return $this->stationRepository->findNearByStation($request);
     }
     /**
      * @param stationId
@@ -52,14 +53,6 @@ class LocateBusStopController extends Controller
         if ($validator->fails()) {
             return response(['errors' => $validator->errors()->all()], 422);
         }
-
-        $buses = DB::table('buses')
-            ->select(DB::raw("buses.id, buses.busCode"))
-            ->leftJoin('bus_routes', 'buses.id', '=', 'bus_routes.busId')
-            ->leftJoin('bus_route_stations', 'bus_routes.id', "=", 'bus_route_stations.busRouteId')
-            ->where('bus_route_stations.stationId', "=", $stationId)
-            ->where('buses.status', "=", 1)->distinct()
-            ->paginate();
-        return response($buses, 200);
+        return $this->busRepository->findBusesByStationId($stationId);
     }
 }

@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Station;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\StationResource;
+use App\Repositories\Interfaces\StationRepositoryInterface;
 
 class StationController extends Controller
 {
+    private $stationRepository;
+
+    public function __construct(StationRepositoryInterface $stationRepository)
+    {
+        $this->stationRepository = $stationRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +22,7 @@ class StationController extends Controller
      */
     public function index()
     {
-        $projects = Station::paginate();
-        return response(['data' => StationResource::collection($projects), 'message' => 'Retrieved successfully'], 200);
+        return $this->stationRepository->all();
     }
 
     /**
@@ -43,10 +47,10 @@ class StationController extends Controller
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
-        $project = Station::create($data);
-
-        return response(['data' => new StationResource($project), 'message' => 'Created successfully'], 201);
+        return $this->stationRepository->create($data);
     }
+
+    
     public function search(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -55,7 +59,10 @@ class StationController extends Controller
         if ($validator->fails()) {
             return response(['errors' => $validator->errors()->all()], 422);
         }
-        $response = Station::where('name','like', "%{$request['name']}%")->paginate();
-        return response(['data' => StationResource::collection($response), 'message' => 'Retrieved successfully'], 200);
+
+        return $this->stationRepository->search(['name'=>$request['name']])->paginate();
+
+        // $response = Station::where('name','like', "%{$request['name']}%")->paginate();
+        // return response(['data' => StationResource::collection($response), 'message' => 'Retrieved successfully'], 200);
     }
 }
